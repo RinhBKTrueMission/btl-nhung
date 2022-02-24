@@ -1,0 +1,33 @@
+    #menu_nav li {
+        position: relative;
+        text-decoration: none;
+        list-style: none;
+    }
+    
+    #mainli:hover ul {
+        display: block;
+    }
+
+#submenu {
+    position: absolute;
+    background-color: #DCDCDC;
+    padding: 10px 0px;
+    list-style: none;
+    width: 70px;
+    display: none;
+}
+    
+    #submenu li {
+        list-style: none;
+        border-bottom: 1px solid white;
+    }
+    
+    #submenu a {
+        text-decoration: none;
+        color: black;
+        margin-left: 10px;
+    }
+    
+    #submenu li:last-child {
+        border-bottom: none;
+    }

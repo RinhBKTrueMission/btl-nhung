@@ -1,0 +1,67 @@
+﻿.circular--landscape {
+    display: inline-block;
+    position: relative;
+    width: 130px;
+    height: 130px;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: aqua;
+    margin-top: 65px;
+    margin-left: 65px;
+    margin-right: 65px;
+    margin-bottom: 20px;
+}
+
+    .circular--landscape img {
+        width: 100%;
+        height: auto;
+    }
+
+.avatarInfo {
+    background-color: azure;
+    width: 260px;
+    height: 500px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#myImg:hover {
+    opacity: 0.8;
+}
+
+.Name {
+    font-size: 24px;
+    font-family: 'Times New Roman', Times, serif;
+    font-style: italic;
+    color: cadetblue;
+    text-align: center;
+}
+
+.profile-usermenu {
+    margin-top: 30px;
+    padding-bottom: 20px;
+}
+
+.nav {
+    margin-bottom: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+li {
+    height: 35px;
+    margin-bottom: 1px;
+}
+
+li:hover {
+        background-color: rgb(206, 219, 221);
+ }
+
+.menu {
+    text-decoration: none;
+    color: rgb(78, 76, 76);
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+}

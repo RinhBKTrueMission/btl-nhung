@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "Juv5PDtBFO+CRHANu3CrlecLx3LHhD11qGWrTkuGGV+0RAjvscFpKcIqYx0VqCJKJj0vDue9V5BQJVEcNyniUg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\rinhb\\source\\repos\\btl_embedded\\btl_embedded\\btl_embedded.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\rinhb\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
+  "logs": []
+}

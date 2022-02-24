@@ -1,0 +1,233 @@
+﻿@model IEnumerable<btl_embedded.Models.Patient>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div id="top_bar" style="margin:15px 0px 50px 0px;display:flex">
+    <div class="wrapper">
+        <div class="button_add">
+            <button style="width:100px;height:30px;border-radius:5%" class="btn-outline-info"><div id="dialog"><i class="fas fa-plus-circle" style="margin-left:-25px"></i><span style="margin-left:15px">Add</span></div></button>
+        </div>
+        <div class="modal_box">
+            <div class="modal_bg_shadow"></div>
+            <form id="addpat" method="post">
+                <div class="modal_box_wrap">
+                    <div class="modal_close"></div>
+                    <div class="modal_header">
+                        Thông tin bệnh nhân
+                    </div>
+                    <div class="modal_body">
+                        <div class="row1">
+                            <div class="prosModel">
+                                <label for="firstName">Tên</label>
+                                <input name="firstName" class="form-control mb-2" type="text" id="firstName" required />
+                            </div>
+                            <div class="prosModel">
+                                <label for="lastName">Họ</label>
+                                <input name="lastName" class="form-control mb-2" type="text" id="lastName" required />
+                            </div>
+                        </div>
+                        <div class="row1">
+                            <div class="prosModel">
+                                <label for="CCCD">Căn cước công dân</label>
+                                <input name="CCCD" class="form-control mb-2" type="text" id="CCCD" required />
+                            </div>
+                            <div class="prosModel">
+                                <label for="gender">Giới tính</label>
+                                <select name="gender" class="form-control mb-2" type="text" id="gender" required>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="row1">
+                            <div class="prosModel">
+                                <label for="birth">Ngày sinh</label>
+                                <input name="birth" class="form-control mb-2" type="date" id="birth" required />
+                            </div>
+                            <div class="prosModel">
+                                <label for="phoneNumber">Số điện thoại</label>
+                                <input name="phoneNumber" class="form-control mb-2" type="text" id="phoneNumber" required />
+                            </div>
+
+                        </div>
+                        <div class="row1">
+                            <div class="prosModel">
+                                <label for="beginDate">Ngày phát hiện F0</label>
+                                <input name="beginDate" class="form-control mb-2" type="date" id="beginDate" required />
+                            </div>
+                            <div class="prosModel">
+                                <label for="address">Địa chỉ</label>
+                                <input name="address" class="form-control mb-2" type="text" id="address" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal_footer">
+                        <div class="modal_btn_grp">
+                            <div class="btn btn_cancel">Cancel</div>
+                            <div class="btn btn_confirm"><input class="btn ip_submit" style="margin-left:-8px" type="submit" value="Confirm" /></div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<div id="patientTable" style="margin-top:-560px">
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Mã bệnh nhân</th>
+                <th>Họ</th>
+                <th>Tên</th>
+                <th>Mã CCCD</th>
+                <th>Ngày sinh</th>
+                <th>Giới tính</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Ngày phát hiện</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td><a asp-route-id="@item.Id" asp-action="Details">@item.patientId</a></td>
+                    <td>@item.lastName</td>
+                    <td>@item.firstName</td>
+                    <td>@item.CCCD</td>
+                    <td>@item.birth</td>
+                    <td>@item.gender</td>
+                    <td>@item.phoneNumber</td>
+                    <td>@item.address</td>
+                    <td>@item.beginDate</td>
+                   
+                </tr>
+            }
+            <tr><td colspan="5"><strong>Tổng số: @Model.Count()</strong></td></tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+<script>
+    $(document).ready(function () {
+        sub_mqtt_msg();
+        $(".button_add").click(function () {
+            $(".modal_box").addClass("active");
+        });
+
+        $(".modal_close").click(function () {
+            $(".modal_box").removeClass("active");
+        });
+        $(".btn_cancel").click(function () {
+            $(".modal_box").removeClass("active");
+        });
+        $(".ip_submit").click(function () {
+
+            $.ajax("@Url.Action("Add", "Home")", {
+                type: 'POST',  // http method
+                data: { ketqua: JSON.stringify($('#addpat').serializeArray()) }, // data to submit
+            success: function (response) {
+                result = JSON.parse(response);
+                alert(result);
+                 @*$.ajax({
+                     type: "GET",
+                     url: "@Url.Action("Index", "Home")",
+                     //contentType: "application/json; charset=utf-8",
+                      success: function () {
+                      }
+
+                });*@
+
+
+             },
+            });
+
+        });
+        sub_mqtt_msg();
+    });
+      function sub_mqtt_msg() {
+            // Send an MQTT message
+            var mqtt_server = "broker.hivemq.com";
+            var mqtt_port = 8000;
+
+            client = new Paho.MQTT.Client(mqtt_server, mqtt_port, "");
+            client.onMessageArrived = onMessageArrived;
+            client.onMessageArrived = onMessageArrived;
+            client.connect({ onSuccess: onConnect });
+
+        }
+        function onConnect() {
+            client.subscribe("demobtl1");
+        }
+        function onMessageArrived(message) {
+            var name = 'ketqua';
+            var dataObject = {};
+            dataObject[name] = message.payloadString;
+            @*$.post("@Url.Action("SetData","Home")", result, null);*@
+            $.ajax("@Url.Action("SetData", "Main")", {
+                type: 'POST',  // http method
+                data: dataObject, // data to submit
+                success: function () {
+                }
+            });
+              @*$.ajax("@Url.Action("SetDevBom", "Home")", {
+                type: 'POST',  // http method
+                data: dataObject, // data to submit
+                  success: function (response) {
+                      var data = JSON.parse(response);
+                      if (data >= 10) return;
+                      mqtt_server = "broker.hivemq.com";
+                      mqtt_port = 8000;
+                      client = new Paho.MQTT.Client(mqtt_server, mqtt_port, "");
+                      client.connect({ onSuccess: onConnectControl2(data) });
+                }
+              });
+             $.ajax("@Url.Action("SetDevDen", "Home")", {
+                type: 'POST',  // http method
+                data: dataObject, // data to submit
+                 success: function (response) {
+                     var data = JSON.parse(response);
+                     if (data >= 10) return;
+                     mqtt_server = "broker.hivemq.com";
+                     mqtt_port = 8000;
+                     client = new Paho.MQTT.Client(mqtt_server, mqtt_port, "");
+                     client.connect({ onSuccess: onConnectControl2(data) });
+                }
+            });*@
+        }
+    function addpatient() {
+
+
+        $.ajax("@Url.Action("Add", "Home")", {
+            type: 'POST',  // http method
+            data: { ketqua:$('#addpat').serialize() }, // data to submit
+            success: function (response) {
+                result = JSON.parse(response);
+                console.log(result);
+                //if (result == "success") {
+                //    alert("thành công");
+                //    $(".modal_box").removeClass("active");
+                //} else {
+                //    alert("thất bại")
+                //}
+
+             },
+            });
+
+        @*$.ajax({
+            type: "POST",
+            url: @Url.Action("Add", "Home"),
+            data: { ketqua: $('#addpat').serialize() },
+        }).done(function (data) {
+            console.log(data);
+        });*@
+
+
+    }
+</script>

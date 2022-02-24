@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Thongke";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script>
+    $(document).ready(function () {
+            $.ajax("@Url.Action("thongke", "Main")", {
+                type: 'GET',  // http method             
+                success: function (response) {
+                    var data = JSON.parse(response);
+                    BieuDo(data);
+
+             },
+            });
+         function BieuDo(data) {
+
+             var ctx = document.getElementById('myChart').getContext('2d');
+             var chart = new Chart(ctx, {
+                 // The type of chart we want to create
+                 type: 'line',
+                 // The data for our dataset
+                 data: {
+                     labels: [data[0].time, data[1].time, data[2].time, data[3].time, data[4].time, data[5].time, data[6].time],
+                     datasets: [{
+                         label: 'Đã khỏi',
+                         backgroundColor: "#F5DEB3",
+                         borderColor: "#F5DEB3",
+                         data: [data[0].beginCovid, data[1].beginCovid, data[2].beginCovid, data[3].beginCovid, data[4].beginCovid, data[5].beginCovid, data[6].beginCovid],
+                         fill: false,
+                     },
+                     {
+                         label: 'Đang điều trị',
+                         backgroundColor: "#C92239",
+                         borderColor: "#C92239",
+                         data: [data[0].endCovid, data[1].endCovid, data[2].endCovid, data[3].endCovid, data[4].endCovid, data[5].endCovid, data[6].endCovid],
+                         fill: false,
+                     }]
+                 },
+                 // Configuration options go here
+                 options: {}
+             });
+
+
+         }
+
+    });
+</script>
+<div style="margin:0px 20px">
+    <canvas id="myChart"></canvas>
+</div>

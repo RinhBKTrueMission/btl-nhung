@@ -1,0 +1,322 @@
+﻿@model btl_embedded.Models.Patient
+@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var mykq = 0;
+    var mykq1 = 0;
+    @foreach (var item in Model.resultdates.ToArray())
+    {
+        @if (item.result == false)
+        {
+            mykq += 1;
+        }
+    }
+    mykq1 = Model.resultdates.Count() - mykq;
+
+}
+<div>
+
+    <div class="top-details" style="display:flex;">
+
+        <div class="nav_avt">
+            <button type="button" style="border-block-color:aliceblue;" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+
+            <!-- Modal -->
+            <form method="post" id="url_change">
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <h4 class="modal-title">Url Image</h4>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="text" name="urlAvt" class="form-control mb-2" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" id="thaydoi" class="btn btn-default" data-dismiss="modal">Ok</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <div>
+                <img id="avt_img" style="width:150px;height:225px" src="@Model.urlAvt" />
+            </div>
+            <div style="margin-left:10px;color: #6A5ACD;">
+                <strong>PatientId: @Html.DisplayFor(model => model.patientId)</strong>
+            </div>
+        </div>
+        <form method="post" asp-action="updatePat" asp-controller="Main" enctype="multipart/form-data">
+            <div class="nav-info">
+
+                <div class="modal_body">
+                    <div class="row1">
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="firstName">Tên</label>
+                            <input name="firstName" class="form-control mb-2" type="text" id="firstName" value="@Html.DisplayFor(model => model.firstName)" readonly="readonly" />
+                        </div>
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="lastName">Họ</label>
+                            <input name="lastName" class="form-control mb-2" type="text" id="lastName" value="@Html.DisplayFor(model => model.lastName)" readonly="readonly" />
+                        </div>
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="CCCD">Căn cước công dân</label>
+                            <input name="CCCD" class="form-control mb-2" type="text" id="CCCD" value="@Html.DisplayFor(model => model.CCCD)" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="row1">
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="gender">Giới tính</label>
+                            <input name="gender" class="form-control mb-2" type="text" id="gender" value="@Html.DisplayFor(model => model.gender)" readonly="readonly" />
+                        </div>
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="birth">Ngày sinh</label>
+                            <input name="birth" class="form-control mb-2" type="date" id="birth" value="@Html.DisplayFor(model => model.birth)" readonly="readonly" />
+                        </div>
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="phoneNumber">Số điện thoại</label>
+                            <input name="phoneNumber" class="form-control mb-2" type="text" id="phoneNumber" value="@Html.DisplayFor(model => model.phoneNumber)" />
+                        </div>
+                    </div>
+                    <div class="row1">
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="beginDate">Ngày phát hiện F0</label>
+                            <input name="beginDate" class="form-control mb-2" type="date" id="beginDate" value="@Html.DisplayFor(model => model.beginDate)" />
+                        </div>
+                        <div class="prosModel">
+                            <label style="color: #6A5ACD;" for="address">Địa chỉ</label>
+                            <input name="address" class="form-control mb-2" type="text" id="address" value="@Html.DisplayFor(model => model.address)" />
+                        </div>
+                        <div class="prosModel">
+                            <input name="update" style=" background-color: #50C7C7; margin-top: 30px; width: 100px;margin-left:100px" class="form-control mb-2" type="submit" value="Cập nhật" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <hr />
+    <div style="color: #6A5ACD;">
+        <strong>Tình trạng bệnh</strong>
+    </div>
+
+    @if (Model.success == false)
+    {
+        <div style="margin:0px 100px 0px 20px;display:flex">
+            <div style="margin:0px 100px 0px 20px">
+                <input type="radio" id="dt" name="success" value="false">
+                <label for="success">Đã khỏi</label><br>
+            </div>
+            <div>
+                <input type="radio" id="dt" name="success" value="true" checked>
+                <label for="success">Chưa khỏi</label><br>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div style="display:flex;margin:0px 100px 0px 20px">
+            <div style="margin:0px 100px 0px 20px">
+                <input type="radio" id="dt" name="success" value="false" checked>
+                <label for="success">Đã khỏi</label><br>
+            </div>
+            <div>
+                <input type="radio" id="dt" name="success" value="true">
+                <label for="success">Chưa khỏi</label><br>
+            </div>
+        </div>
+
+    }
+
+    <div style="display:flex;margin-left:10px">
+        <div class="prosModel" style="margin-left:15px">
+            <label style="color: #6A5ACD;" for="than_nhiet">Thân nhiệt (độ C)</label>
+            <input name="than_nhiet" class="form-control mb-2" type="text" id="gender" value="@(Model.resultHeath.ToArray()[Model.resultHeath.ToArray().Length-1].than_nhiet)"  readonly="readonly" />
+        </div>
+        <div class="prosModel" style="margin-left:15px">
+            <label style="color: #6A5ACD;" for="than_nhiet">Nồng độ oxy trong máu (%)</label>
+            <input name="than_nhiet" class="form-control mb-2" type="text" id="gender" value="@(Model.resultHeath.ToArray()[Model.resultHeath.ToArray().Length-1].nong_do_oxy)"  readonly="readonly" />
+        </div>
+        <div class="prosModel" style="margin-left:15px">
+            <label style="color: #6A5ACD;" for="than_nhiet">Nhịp tim (nhịp/phút)</label>
+            <input name="than_nhiet" class="form-control mb-2" type="text" id="gender" value="@(Model.resultHeath.ToArray()[Model.resultHeath.ToArray().Length-1].nhip_tim)"  readonly="readonly" />
+        </div>
+    </div>
+    <div style="margin-left: 15px;">
+        Thời gian lấy kết quả: @(Model.resultHeath.ToArray()[Model.resultHeath.ToArray().Length-1].getSampleDate)
+    </div>
+    <hr />
+    <div class="table_index" style="display:flex">
+        <div class="table_left">
+            <div style="margin-left: 15px; color: #6A5ACD;"><strong>Kết quả theo dõi</strong></div>
+            <div style=" overflow-y: scroll; height: 200px;">
+                <table class="table table-hover table-sm" >
+                    <thead>
+                        <tr>
+                            <th>Thời gian lấy kết quả</th>
+                            <th>Nhịp tim (nhịp/phút)</th>
+                            <th>Nồng độ Oxy trong máu (%)</th>
+                            <th>Thân nhiệt (độ C)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ var lsthel = Model.resultHeath;
+                            lsthel.Reverse();
+                            } 
+                        @foreach (var item in lsthel.ToArray())
+                        {
+                            <tr>
+                                <td>@item.getSampleDate</td>
+                                <td>@item.nhip_tim</td>
+                                <td>@item.nong_do_oxy</td>
+                                <td>@item.than_nhiet</td>
+                            </tr>
+                        }
+                        <tr><td colspan="5"><strong>Tổng số: @Model.resultHeath.Count()</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="table-right" style="margin-left:30px">
+
+            <div style="margin-left: 15px;color: #6A5ACD;">Kết quả xét nghiệm</div>
+
+            <table class="table table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Thời gian lấy mẫu</th>
+                        <th>Kết quả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.resultdates.ToArray())
+                    {
+                        <tr>
+                            <td>@item.getSampleDate</td>
+                            <td>@item.result</td>
+                        </tr>
+                    }
+                    <tr><td colspan="5"><strong>Tổng số: @Model.resultHeath.Count()</strong></td></tr>
+                    <tr>
+                        <td colspan="5">
+                            <strong>
+                                Âm tính: @mykq
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <strong>
+                                Dương tính: @mykq1
+                            </strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+    <form  method="post" asp-action="ChangeReport" asp-controller="Main">
+        <div class="report1" style="display:flex;margin-right:10px">
+            <div style="display:block;">
+                <div><i class="fas fa-book-reader"></i><strong style="color: #6A5ACD;">Đánh giá</strong> </div>
+                <input id="report" name="report" value="@Html.DisplayFor(model => model.report)" style="width:300px;height:100px" placeholder="Enter you comment here"/>
+            </div>
+
+            <div class="prosModel">
+                <input name="update" id="reportUp" style=" background-color: #50C7C7; margin-top: 70px; width: 100px;margin-left:100px;" class="form-control mb-2" type="submit" value="Cập nhật" />
+            </div>
+        </div>
+    </form>
+
+
+</div>
+<div style="margin-top: 30px; background-color: #50C7C7;border-radius:5px;width:100px;height:30px">
+    <i class="fas fa-arrow-left"></i><a asp-action="Index" style="text-decoration:none">Back to List</a>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $("#thaydoi").click(function () {
+
+            $.ajax("@Url.Action("ChangeURL", "Main")", {
+                type: 'POST',  // http method
+                data: { img: JSON.stringify($('#url_change').serializeArray()), id:@Model.patientId }, // data to submit
+                success: function (response) {
+                    document.getElementById("avt_img").src = JSON.parse(response);
+                    window.location.reload();
+                    alert("Thành công");
+
+                 },
+            });
+
+        });
+        sub_mqtt_msg();
+    });
+      function sub_mqtt_msg() {
+            // Send an MQTT message
+            var mqtt_server = "broker.hivemq.com";
+            var mqtt_port = 8000;
+
+            client = new Paho.MQTT.Client(mqtt_server, mqtt_port, "");
+            client.onMessageArrived = onMessageArrived;
+            client.onMessageArrived = onMessageArrived;
+            client.connect({ onSuccess: onConnect });
+
+        }
+        function onConnect() {
+            client.subscribe("demobtl1");
+        }
+        function onMessageArrived(message) {
+            var name = 'ketqua';
+            var dataObject = {};
+            dataObject[name] = message.payloadString;
+            @*$.post("@Url.Action("SetData","Home")", result, null);*@
+            $.ajax("@Url.Action("SetData", "Main")", {
+                type: 'POST',  // http method
+                data: dataObject, // data to submit
+                success: function () {
+                }
+            });
+              @*$.ajax("@Url.Action("SetDevBom", "Home")", {
+                type: 'POST',  // http method
+                data: dataObject, // data to submit
+                  success: function (response) {
+                      var data = JSON.parse(response);
+                      if (data >= 10) return;
+                      mqtt_server = "broker.hivemq.com";
+                      mqtt_port = 8000;
+                      client = new Paho.MQTT.Client(mqtt_server, mqtt_port, "");
+                      client.connect({ onSuccess: onConnectControl2(data) });
+                }
+              });
+             $.ajax("@Url.Action("SetDevDen", "Home")", {
+                type: 'POST',  // http method
+                data: dataObject, // data to submit
+                 success: function (response) {
+                     var data = JSON.parse(response);
+                     if (data >= 10) return;
+                     mqtt_server = "broker.hivemq.com";
+                     mqtt_port = 8000;
+                     client = new Paho.MQTT.Client(mqtt_server, mqtt_port, "");
+                     client.connect({ onSuccess: onConnectControl2(data) });
+                }
+            });*@
+        }
+
+
+</script>

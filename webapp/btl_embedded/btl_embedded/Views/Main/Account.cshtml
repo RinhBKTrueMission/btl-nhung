@@ -1,0 +1,148 @@
+﻿@model btl_embedded.Models.Account
+
+@{
+    ViewData["Title"] = "Account";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Account</h1>
+
+<div class="top-details" style="display:flex;">
+    <div class="nav_avt" style="margin-right: 100px;">
+        <button type="button" style="border-block-color:aliceblue;" data-toggle="modal" data-target="#myModal"><i class="fas fa-edit"></i></button>
+
+        <!-- Modal -->
+        <form method="post" id="url_change1">
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <h4 class="modal-title">Url Image</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" name="urlAvt1" class="form-control mb-2" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id="thaydoi1" class="btn btn-default" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <img id="avt_img1" style="width:150px;height:225px" src="@Model.avt" />
+        </div>
+        <div style="margin-left:10px;color: #6A5ACD;">
+            <strong>Id: @Html.DisplayFor(model => model.AccId)</strong>
+        </div>
+    </div>
+    <div class="nav-info">
+        <form id="adInfo" method="post" asp-action="UpdateAcc" asp-controller="Main" enctype="multipart/form-data">
+            <div class="modal_body" style="display:flex">
+                <div class="row1" style="display:block">
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="firstName">Tên</label>
+                        <input name="firstName" class="form-control mb-2" type="text" id="firstName" value="@Html.DisplayFor(model => model.firstName)" required />
+                    </div>
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="lastName">Họ</label>
+                        <input name="lastName" class="form-control mb-2" type="text" id="lastName" value="@Html.DisplayFor(model => model.lastName)" required />
+                    </div>
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="userName">User Name</label>
+                        <input name="userName" class="form-control mb-2" type="text" id="userName" value="@Html.DisplayFor(model => model.userName)" readonly />
+                    </div>
+
+
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="passWord">Password</label>
+                        <input name="passWord" class="form-control mb-2" type="password" id="passWord" value="@Html.DisplayFor(model => model.passWord)" required />
+                    </div>
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="birth">Ngày sinh</label>
+                        <input name="birth" class="form-control mb-2" type="date" id="birth" value="@Html.DisplayFor(model => model.Birth)" required />
+                    </div>
+                </div>
+                <div class="row1" style="display:block">
+                    <div class="prosModel">
+                        <label for="gender" style="color: #6A5ACD;">Giới tính</label>
+                        <select name="gender" class="form-control mb-2" type="text" id="gender" required>
+                            <option value="Nam">Nam</option>
+                            <option value="Nữ">Nữ</option>
+                        </select>
+                    </div>
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="email">Email</label>
+                        <input name="email" class="form-control mb-2" type="text" id="email" value="@Html.DisplayFor(model => model.Email)" required />
+                    </div>
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="phoneNumber">Số điện thoại</label>
+                        <input name="phoneNumber" class="form-control mb-2" type="text" id="phoneNumber" value="@Html.DisplayFor(model => model.phoneNumber)" required />
+                    </div>
+
+
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="duty">Chức vụ</label>
+                        <input name="duty" class="form-control mb-2" type="text" id="duty" value="@Html.DisplayFor(model => model.duty)" required />
+                    </div>
+                    <div class="prosModel">
+                        <label style="color: #6A5ACD;" for="address">Địa chỉ</label>
+                        <input name="address" class="form-control mb-2" type="text" id="address" value="@Html.DisplayFor(model => model.Address)" required />
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="prosModel">
+                <input name="update" id="update" style=" background-color: #50C7C7; margin-top: 30px; width: 100px;margin-left:100px" class="form-control mb-2" type="submit" value="Cập nhật" />
+            </div>
+        </form>
+    </div>
+
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#thaydoi1").click(function () {
+
+            $.ajax("@Url.Action("ChangeURL_AD", "Main")", {
+                type: 'POST',  // http method
+                data: { img: JSON.stringify($('#url_change1').serializeArray()) }, // data to submit
+                success: function (response) {
+                    document.getElementById("avt_img1").src = JSON.parse(response);
+                    window.location.reload();
+                    alert("Thành công");
+
+                 },
+            });
+
+        });
+         @*$("#update").click(function () {
+
+            $.ajax("@Url.Action("UpdateAcc", "Main")", {
+                type: 'POST',  // http method
+                data: { info: JSON.stringify($('#adInfo').serializeArray()) }, // data to submit
+                success: function (response) {
+
+                    alert("Thành công");
+
+                 },
+            });
+
+        });*@
+    });
+
+
+</script>
